@@ -1,10 +1,14 @@
 from ultralytics import YOLO
 import os
 from roboflow import Roboflow
+from data_preprocessing import DataPreprocessor
 
 def train_yolo():
     data_dir = 'Household-small-objects'
-        
+    
+    preprocessor = DataPreprocessor(data_dir)
+    preprocessor.augment_dataset(num_augmentations=3)
+
     # Load a pretrained YOLO model
     model = YOLO('yolo11n.pt')
     
