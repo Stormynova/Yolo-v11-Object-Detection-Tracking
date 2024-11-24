@@ -2,6 +2,8 @@ from ultralytics import YOLO
 import os
 from roboflow import Roboflow
 from data_preprocessing import DataPreprocessor, visualize_dataset
+import argparse
+import yaml
 
 def train_yolo(augment_dataset = False):
     data_dir = 'Household-small-objects'
@@ -35,4 +37,8 @@ if __name__ == "__main__":
     version = project.version(4)
     dataset = version.download("yolov11")
     
-    train_yolo()
+    parser = argparse.ArgumentParser(description="Train YOLO model with or without data augmentation")
+    parser.add_argument("--augment", action="store_true", help="Perform data augmentation")
+    args = parser.parse_args()
+    augment_dataset = args.augment
+    train_yolo(augment_dataset)
