@@ -1,7 +1,8 @@
 from ultralytics import YOLO
 import os
 from roboflow import Roboflow
-from data_preprocessing import DataPreprocessor, visualize_dataset
+from data_preprocessing import DataPreprocessor
+from visualization import visualize_dataset, visualize_statistics
 import argparse
 import yaml
 
@@ -14,7 +15,9 @@ def train_yolo(augment_dataset = False):
         print("Performing data augmentation...")
         preprocessor.augment_dataset(num_augmentations=3)
         
+    print("Generating dataset visualizations...")
     visualize_dataset(data_dir)
+    visualize_statistics(data_dir)
 
     # Load a pretrained YOLO model
     model = YOLO('yolo11n.pt')
