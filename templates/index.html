@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household Object Detection</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-camera-retro"></i> Real-time Object Detection</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+                Toggle Theme
+            </button>
+        </div>
+        
+        <div class="main-content">
+            <div class="video-section">
+                <div class="video-container">
+                    <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+                </div>
+                
+                <div class="controls">
+                    <button onclick="captureFrame()">
+                        <i class="fas fa-camera"></i>
+                        Detect Objects
+                    </button>
+                    <div class="threshold-control">
+                        <label for="confidence-threshold">
+                            <i class="fas fa-percentage"></i>
+                            Confidence Threshold:
+                        </label>
+                        <input 
+                            type="range" 
+                            id="confidence-threshold" 
+                            min="1" 
+                            max="100" 
+                            value="50"
+                            onchange="updateThreshold(this.value)">
+                        <span id="threshold-value">50%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detection-section">
+                <div id="detections">
+                    <h2><i class="fas fa-list-ul"></i> Detected Objects</h2>
+                    <div id="detection-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/scripts.js"></script>
+</body>
+</html> 
