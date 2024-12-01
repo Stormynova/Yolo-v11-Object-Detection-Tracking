@@ -64,9 +64,11 @@ function updateDetectionList(detections) {
         header.appendChild(nameSpan);
         header.appendChild(confidenceBadge);
         
+        // Metrics section
         const metrics = document.createElement('div');
         metrics.className = 'detection-metrics';
         
+        // Distance bar
         const distanceRow = document.createElement('div');
         distanceRow.className = 'metric-row';
         
@@ -80,6 +82,7 @@ function updateDetectionList(detections) {
         const distanceBar = document.createElement('div');
         distanceBar.className = 'distance-bar';
         
+        // Add distance value text
         const distanceText = document.createElement('span');
         distanceText.className = 'metric-value';
         distanceText.textContent = detection.distance ? `${detection.distance}m` : 'N/A';
@@ -92,6 +95,7 @@ function updateDetectionList(detections) {
         distanceRow.appendChild(distanceBarContainer);
         distanceRow.appendChild(distanceText);
         
+        // Angle indicator
         const angleRow = document.createElement('div');
         angleRow.className = 'metric-row';
         
@@ -107,12 +111,14 @@ function updateDetectionList(detections) {
         
         const anglePointer = document.createElement('div');
         anglePointer.className = 'angle-pointer';
+        // Convert angle (-45 to 45 degrees) to position (0 to 100%)
         const anglePercent = ((detection.angle || 0) + 45) / 90 * 100;
         anglePointer.style.left = `${anglePercent}%`;
         
         angleIndicator.appendChild(centerMarker);
         angleIndicator.appendChild(anglePointer);
         
+        // Add angle value text
         const angleText = document.createElement('span');
         angleText.className = 'metric-value';
         angleText.textContent = detection.angle ? `${detection.angle}°` : 'N/A';
@@ -130,6 +136,7 @@ function updateDetectionList(detections) {
     });
 }
 
+// Add this function to periodically update detections
 function startRealTimeUpdates() {
     setInterval(() => {
         fetch('/detect', {
@@ -145,6 +152,7 @@ function startRealTimeUpdates() {
     }, 1000); // Update every second
 }
 
+// Call this when the page loads
 document.addEventListener('DOMContentLoaded', startRealTimeUpdates); 
 
 function updateThreshold(value) {
@@ -191,3 +199,14 @@ function showCameraError(message) {
     videoFeed.parentNode.insertBefore(errorDiv, videoFeed);
     videoFeed.style.display = 'none';
 }
+
+function hideCameraError() {
+    const errorDiv = document.querySelector('.camera-error');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+    document.getElementById('video-feed').style.display = 'block';
+}
+
+// Check camera status periodically
+setInterval(checkCamera, 5000); 
