@@ -6,8 +6,7 @@
 
 A real-time object detection system using YOLOv11 for identifying and tracking household objects with distance and angle estimation.
 
-<img src="./assets/cover.gif" alt="yolo detection gif" width="200">
-</div>
+<center><img src="./assets/cover.gif" alt="yolo detection gif" width="500"></center>
 
 ## ✨ Features
 
