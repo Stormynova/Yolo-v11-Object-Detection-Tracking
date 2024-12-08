@@ -82,5 +82,14 @@ python train.py --augment # Use --augment flag for data augmentation
 
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/val_batch0_pred.jpg)
 
+---
+## Contribute
+Please read [CONTRIBUTING](./CONTRIBUTING) for details
+## [MIT License](./LICENSE)
 
-## [License](./LICENSE)
+## References
+- [YOLOv11](https://github.com/ultralytics/yolov5)
+- [Flask](https://flask.palletsprojects.com/)
+- [OpenCV](https://opencv.org/)
+- [NumPy](https://numpy.org/)
+- [Pandas](https://pandas.pydata.org/)
