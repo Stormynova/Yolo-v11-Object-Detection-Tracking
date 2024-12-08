@@ -1,7 +1,7 @@
 # YOLO 11 Object Detection & Tracking 🎯
 [![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![YOLOv11](https://img.shields.io/badge/YOLO-v11-darkgreen.svg)](https://github.com/ultralytics/yolov5)
+[![YOLOv11](https://img.shields.io/badge/YOLO-v11-darkgreen.svg)](https://github.com/ultralytics/ultralytics)
 [![Flask](https://img.shields.io/badge/flask-%23000.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 
 A real-time object detection system using YOLOv11 for identifying and tracking household objects with distance and angle estimation.
