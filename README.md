@@ -1,9 +1,9 @@
 # YOLO Object Detection
-A real-time object detection system using YOLOv8 for identifying and tracking household objects with distance and angle estimation.
+A real-time object detection system using YOLOv11 for identifying and tracking household objects with distance and angle estimation.
 
 ## Features
 
-- Real-time object detection using YOLOv8
+- Real-time object detection using YOLOv11
 - Distance and angle estimation for detected objects
 - Web-based interface with live video feed
 - Confidence threshold adjustment
