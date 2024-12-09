@@ -21,14 +21,27 @@ A real-time object detection system using YOLOv11 for identifying and tracking h
 🥄 Spoon, 🧢 Cap, 📏 Comb, ⌚ Watch, ☕ Mug
 
 ## 📖 About
+This project implements a real-time object detection and tracking system using YOLOv11, optimized for household objects. The system features:
+
+- Custom-trained YOLOv11 model on household objects dataset
+- Flask web application for easy interaction and monitoring
+- Advanced camera handling with multiple source options
+- Temporal smoothing algorithm to reduce detection jitter
+- Distance estimation using object size references
+- Angle calculation for spatial awareness
+- Real-time visualization with confidence scores and labels
 
 ## 🚀 Installation
 
-1. Clone the repository: 
+1. Install dependencies
+ 
+2. Clone the repository: 
 ```bash
 git clone https://github.com/Stormynova/Object-detection-tracking.git
 cd Object-detection-tracking
 
+python3 -m venv env # Make sure python3-venv is installed
+source env/bin/activate
 pip install -r requirements.txt
 ```
 

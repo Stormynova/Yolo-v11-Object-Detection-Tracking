@@ -4,3 +4,6 @@ yolo11n*
 Household-small-objects-5-4/*
 visualization_results/*
 datasets/*
+.env/*
+env/*
+*.pyc
