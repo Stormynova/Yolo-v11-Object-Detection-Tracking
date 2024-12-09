@@ -1,13 +1,9 @@
 REFERENCE_SIZES = {
-    'mug': {'width': 0.08, 'height': 0.10},  # meters
-    'spoon': {'width': 0.07, 'height': 0.25},
-    'cap': {'width': 0.07, 'height': 0.15},
-    'watch': {'width': 0.35, 'height': 0.25},
-    'comb': {'width': 0.15, 'height': 0.21},
+    'mug': {'width': 0.09, 'height': 0.12},  # meters
+    'spoon': {'width': 0.03, 'height': 0.18},
+    'cap': {'width': 0.18, 'height': 0.12},
+    'watch': {'width': 0.04, 'height': 0.05},
+    'comb': {'width': 0.04, 'height': 0.15},
 }
 
-# Camera parameters (adjust based on your camera)
-FOCAL_LENGTH = 1000  # pixels
-SENSOR_WIDTH = 1280  # pixels
-SENSOR_HEIGHT = 720  # pixels
-CAMERA_FOV = 60  # degrees 
+FOCAL_LENGTH = 1000

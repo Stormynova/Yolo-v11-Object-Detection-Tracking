@@ -1,8 +1,8 @@
 import math
-import numpy as np
-from config.object_sizes import REFERENCE_SIZES, FOCAL_LENGTH, SENSOR_WIDTH, CAMERA_FOV
+from config.object_sizes import REFERENCE_SIZES, FOCAL_LENGTH
 
 def calculate_distance_and_angle(bbox, class_name, frame_width):
+    """Calculate distance and angle of detected object"""
     if class_name not in REFERENCE_SIZES:
         return None, None
 

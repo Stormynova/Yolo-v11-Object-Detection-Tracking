@@ -34,9 +34,7 @@ def init_camera():
     
     Attempts to connect to cameras in priority order:
     1. System webcam
-    2. Local network stream
-    3. RTSP stream
-    4. Linux video device
+        ... add more
     
     Returns:
         bool: True if connection successful, False otherwise
@@ -106,7 +104,14 @@ def generate_frames():
         try:
             # Run detection pipeline
             detections = detector.detect_objects(frame)
-            smoothed_detections = smoother.update(detections)
+            
+            # Filter detections based on confidence threshold
+            filtered_detections = [
+                det for det in detections 
+                if det['confidence'] >= CONFIDENCE_THRESHOLD
+            ]
+            
+            smoothed_detections = smoother.update(filtered_detections)
             
             # Render detection visualizations
             annotated_frame = frame.copy()
@@ -167,8 +172,9 @@ def generate_frames():
             
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   
         except Exception as e:
-            print(f"Error in generate_frames: {e}")
+            print(f"Frame generation error: {e}")
             continue
 
 @app.route('/')

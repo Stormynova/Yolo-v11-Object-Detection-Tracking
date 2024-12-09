@@ -66,7 +66,12 @@ python app.py
 
 ## Training
 
-To train the model on your own dataset:
+### Roboflow Setup:
+```bash
+export ROBOFLOW_API_KEY=YOUR_API_KEY
+```
+
+### Training:
 
 1. Prepare your dataset in YOLOv11 format
 2. Configure training parameters in `train.py`

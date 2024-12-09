@@ -145,7 +145,11 @@ function startRealTimeUpdates() {
         .then(response => response.json())
         .then(data => {
             if (!data.error) {
-                updateDetectionList(data.detections);
+                // Filter detections based on current threshold
+                const filteredDetections = data.detections.filter(detection => 
+                    detection.confidence * 100 >= currentThreshold
+                );
+                updateDetectionList(filteredDetections);
             }
         })
         .catch(error => console.error('Error:', error));
@@ -155,7 +159,10 @@ function startRealTimeUpdates() {
 // Call this when the page loads
 document.addEventListener('DOMContentLoaded', startRealTimeUpdates); 
 
+let currentThreshold = 50; // Default threshold value (matches HTML default)
+
 function updateThreshold(value) {
+    currentThreshold = parseInt(value);
     document.getElementById('threshold-value').textContent = `${value}%`;
     
     fetch(`/update_threshold/${value}`, {
