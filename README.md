@@ -51,6 +51,7 @@ python -m pip install --upgrade virtualenv
 ```
 Create and Activate the environment - 
 ```bash
+Set-ExecutionPolicy Unrestricted -Scope Process
 python -m venv env
 env\Scripts\activate
 python -m pip install -r requirements.txt 
