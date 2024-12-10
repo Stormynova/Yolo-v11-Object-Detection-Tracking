@@ -35,7 +35,7 @@ This project implements a real-time object detection and tracking system using Y
 
 1. Clone the repository: 
 ```bash
-git clone https://github.com/Stormynova/Object-detection-tracking.git
+git clone https://github.com/Stormynova/Yolo-v11-Object-Detection-Tracking.git
 cd Object-detection-tracking
 ``` 
 
