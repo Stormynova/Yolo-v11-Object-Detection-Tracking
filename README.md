@@ -103,13 +103,29 @@ python train.py --augment # Use --augment flag for data augmentation
 
 ## YOLOv11 Training Results
 ### Training Plots
+
+- Training Results
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/results.png)
+
+- Confusion Matrix Normalized
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/confusion_matrix_normalized.png)
+
+- Dataset & BBox Statistics
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/labels.jpg)
+
+- Labels Correlogram
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/labels_correlogram.jpg)
+
+- F1 Score Curve
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/F1_curve.png)
+
+- Precision Curve
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/P_curve.png)
+
+- Recall Curve
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/R_curve.png)
+
+- PR Curve
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/PR_curve.png)
 
 ### Training Predictions
