@@ -41,6 +41,7 @@ cd Object-detection-tracking
 
 2. Install dependencies
 - Windows
+
 [Optional] Skip if already installed -
 ```bash
 python --version # Make sure python is installed (https://www.python.org/downloads/release/python-3100/)
