@@ -36,7 +36,7 @@ This project implements a real-time object detection and tracking system using Y
 1. Clone the repository: 
 ```bash
 git clone https://github.com/Stormynova/Yolo-v11-Object-Detection-Tracking.git
-cd Object-detection-tracking
+cd Yolo-v11-Object-Detection-Tracking
 ``` 
 
 2. Install dependencies
@@ -119,6 +119,11 @@ python train.py --augment # Use --augment flag for data augmentation
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/val_batch1_pred.jpg)
 
 ![](./runs/detect/household_objects-batch32-v11-alldata_e200/val_batch0_pred.jpg)
+
+
+### Distance and Angle Error Measure
+![](./assets/distance.png)
+![](./assets/angle.png)
 
 ---
 ## Contribute
