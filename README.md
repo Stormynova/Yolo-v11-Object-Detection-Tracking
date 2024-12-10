@@ -49,11 +49,11 @@ python -m ensurepip --upgrade
 python -m pip install --upgrade pip
 python -m pip install --upgrade virtualenv
 ```
-Create and Activate the environment - 
+Create and Activate the environment, if you get an error here, please see debugging chapter - 
 ```bash
 Set-ExecutionPolicy Unrestricted -Scope Process
 python -m venv env
-env\Scripts\activate
+env\Scripts\activate 
 python -m pip install -r requirements.txt 
 ```
  
