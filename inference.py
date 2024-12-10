@@ -9,7 +9,8 @@ class ObjectDetector:
         self.model = YOLO(model_path)
         
     def detect(self, image):
-        results = self.model(image, verbose=False)
+        # results = self.model(image, verbose=False)
+        results = self.model.track(image, show=True)  # Tracking with default tracker
         
         annotated_frame = results[0].plot()
         
