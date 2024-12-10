@@ -41,11 +41,15 @@ cd Object-detection-tracking
 
 2. Install dependencies
 - Windows
+[Optional] Skip if already installed -
 ```bash
 python --version # Make sure python is installed (https://www.python.org/downloads/release/python-3100/)
 python -m ensurepip --upgrade
 python -m pip install --upgrade pip
 python -m pip install --upgrade virtualenv
+```
+Create and Activate the environment - 
+```bash
 python -m venv env
 env\Scripts\activate
 python -m pip install -r requirements.txt 
