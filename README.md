@@ -33,14 +33,28 @@ This project implements a real-time object detection and tracking system using Y
 
 ## 🚀 Installation
 
-1. Install dependencies
- 
-2. Clone the repository: 
+1. Clone the repository: 
 ```bash
 git clone https://github.com/Stormynova/Object-detection-tracking.git
 cd Object-detection-tracking
+``` 
 
-python3 -m venv env # Make sure python3-venv is installed
+2. Install dependencies
+- Windows
+```bash
+python --version # Make sure python is installed (https://www.python.org/downloads/release/python-3100/)
+python -m ensurepip --upgrade
+python -m pip install --upgrade pip
+python -m pip install --upgrade virtualenv
+python -m venv env
+env\Scripts\activate
+python -m pip install -r requirements.txt 
+```
+ 
+- Linux/Mac
+```bash
+sudo apt-get install python3-venv # Linux
+python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
@@ -71,7 +85,7 @@ python app.py
 export ROBOFLOW_API_KEY=YOUR_API_KEY
 ```
 
-### Training:
+### Start Training:
 
 1. Prepare your dataset in YOLOv11 format
 2. Configure training parameters in `train.py`
@@ -111,3 +125,19 @@ Please read [CONTRIBUTING](./CONTRIBUTING) for details
 - [OpenCV](https://opencv.org/)
 - [NumPy](https://numpy.org/)
 - [Pandas](https://pandas.pydata.org/)
+
+
+## Debugging
+
+1. Error: 
+```bash
+ERROR: Could not install packages due to an OSError: [Errno 2] - Tensorflow install error Windows longpath support not enabled
+```
+Solution: https://stackoverflow.com/questions/69950509/tensorflow-install-error-windows-longpath-support-not-enabled
+
+2. Error: 
+```bash
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+```
+Solution: Before `env\Scripts\activate` -> Run `Set-ExecutionPolicy Unrestricted -Scope Process`
