@@ -1,31 +1,33 @@
-from flask import Flask, render_template, Response, jsonify
-import cv2
-from inference import ObjectDetector
-import numpy as np
-import atexit
-from collections import deque
-from typing import Dict, List, Optional
-import time
-from dataclasses import dataclass
-from prediction_smoother import PredictionSmoother
-import os
+# Import required libraries and modules
+from flask import Flask, render_template, Response, jsonify  # Web framework and response types
+import cv2  # OpenCV for image processing
+from inference import ObjectDetector  # Custom object detection module
+import numpy as np  # Numerical computing
+import atexit  # Register cleanup functions
+from collections import deque  # Efficient queue data structure
+from typing import Dict, List, Optional  # Type hints
+import time  # Time utilities
+from dataclasses import dataclass  # Data class decorator
+from prediction_smoother import PredictionSmoother  # Custom detection smoothing
+import os  # Operating system interface
 
+# Initialize Flask application
 app = Flask(__name__)
 
-# Initialize object detector with optimized model weights
+# Create object detector instance using trained model weights
 detector = ObjectDetector('runs/detect/household_objects-batch32-v11-alldata_e200/weights/best.pt')
 
-# Confidence threshold for filtering weak detections (0-1)
-CONFIDENCE_THRESHOLD = 0.5
+# Set minimum confidence threshold for valid detections
+CONFIDENCE_THRESHOLD = 0.5  # Only keep detections above 50% confidence
 
-# Configure temporal smoothing to reduce detection jitter
+# Initialize prediction smoothing to reduce jitter and false positives
 smoother = PredictionSmoother(
-    buffer_size=5,  # Frame history size
-    confidence_threshold=CONFIDENCE_THRESHOLD,
-    min_persistence=3  # Required consecutive detections
+    buffer_size=5,  # Keep track of last 5 frames
+    confidence_threshold=CONFIDENCE_THRESHOLD,  # Use same threshold as detector
+    min_persistence=3  # Object must appear in 3 consecutive frames
 )
 
-# Global video capture device
+# Global video capture object
 camera = None
 
 def init_camera():
@@ -41,16 +43,17 @@ def init_camera():
     """
     global camera
     
-    # Prioritized video sources
+    # List of video sources to try in order
     sources = [
-        0,  # System webcam
+        0,  # System webcam (default camera)
     ]
     
+    # Try each source until we find a working camera
     for source in sources:
         try:
             cap = cv2.VideoCapture(source)
             if cap.isOpened():
-                # Validate connection with test frame
+                # Validate camera works by reading a test frame
                 ret, _ = cap.read()
                 if ret:
                     camera = cap
@@ -73,6 +76,7 @@ def get_camera():
         None: If no camera can be initialized
     """
     global camera
+    # Check if camera needs to be initialized
     if camera is None or not camera.isOpened():
         if not init_camera():
             return None
@@ -92,38 +96,44 @@ def generate_frames():
         bytes: Encoded video frame with annotations
     """
     while True:
+        # Get camera instance
         cam = get_camera()
         if cam is None:
             yield b''
             continue
             
+        # Read frame from camera
         success, frame = cam.read()
         if not success:
             continue
         
         try:
-            # Run detection pipeline
+            # Run object detection on frame
             detections = detector.detect_objects(frame)
             
-            # Filter detections based on confidence threshold
+            # Filter out low confidence detections
             filtered_detections = [
                 det for det in detections 
                 if det['confidence'] >= CONFIDENCE_THRESHOLD
             ]
             
+            # Apply temporal smoothing
             smoothed_detections = smoother.update(filtered_detections)
             
-            # Render detection visualizations
+            # Create visualization frame
             annotated_frame = frame.copy()
+            
+            # Draw detections
             for det in smoothed_detections:
+                # Get bounding box coordinates
                 x1, y1, x2, y2 = [int(coord) for coord in det['bbox']]
                 
-                # Semi-transparent bounding box
+                # Draw semi-transparent box fill
                 overlay = annotated_frame.copy()
                 cv2.rectangle(overlay, (x1, y1), (x2, y2), (0, 255, 0), -1)
                 cv2.addWeighted(overlay, 0.2, annotated_frame, 0.8, 0, annotated_frame)
                 
-                # 3D border effect
+                # Draw 3D border effect
                 thickness = 2
                 alpha = 0.3
                 for i in range(3):
@@ -132,22 +142,25 @@ def generate_frames():
                                 (0, 255, 0), 
                                 thickness)
                     
-                # Confidence score badge
+                # Draw confidence score badge
                 conf_text = f"{det['confidence']:.2f}"
                 text_size = cv2.getTextSize(conf_text, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)[0]
                 
+                # Calculate badge dimensions
                 badge_padding = 5
                 badge_x1 = x1
                 badge_y1 = y1 - text_size[1] - 2 * badge_padding
                 badge_x2 = badge_x1 + text_size[0] + 2 * badge_padding
                 badge_y2 = y1
                 
+                # Draw badge background
                 cv2.rectangle(annotated_frame, 
                             (badge_x1, badge_y1), 
                             (badge_x2, badge_y2), 
                             (0, 200, 0), 
                             -1)
                 
+                # Draw confidence score text
                 cv2.putText(annotated_frame, 
                           conf_text,
                           (badge_x1 + badge_padding, badge_y2 - badge_padding),
@@ -156,7 +169,7 @@ def generate_frames():
                           (255, 255, 255),
                           2)
                 
-                # Object class label
+                # Draw class label
                 label = det['class_name']
                 cv2.putText(annotated_frame,
                           label,
@@ -166,10 +179,11 @@ def generate_frames():
                           (0, 255, 0),
                           2)
             
-            # Encode frame for streaming
+            # Encode frame as JPEG
             ret, buffer = cv2.imencode('.jpg', annotated_frame)
             frame = buffer.tobytes()
             
+            # Yield frame in MJPEG format
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
                    
@@ -196,15 +210,18 @@ def detect():
     Returns:
         JSON containing detection results or error message
     """
+    # Get camera instance
     cam = get_camera()
     if cam is None:
         return jsonify({'error': 'No camera available'})
         
+    # Read single frame
     success, frame = cam.read()
     if not success:
         return jsonify({'error': 'Failed to capture frame'})
     
     try:
+        # Run detection pipeline
         detections = detector.detect_objects(frame)
         filtered_detections = [d for d in detections if d['confidence'] >= CONFIDENCE_THRESHOLD]
         smoothed_detections = smoother.update(filtered_detections)
@@ -248,6 +265,7 @@ def cleanup():
     if camera is not None:
         camera.release()
 
+# Register cleanup function to run on shutdown
 atexit.register(cleanup)
 
 @app.route('/camera/check', methods=['GET'])
@@ -272,6 +290,7 @@ def check_camera():
         })
     
     try:
+        # Get camera properties
         props = {
             'width': int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)),
             'height': int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)),
@@ -292,9 +311,10 @@ def check_camera():
         })
 
 if __name__ == '__main__':
-    # Production server configuration
+    # Get port from environment variable or use default
     port = int(os.environ.get('PORT', 5000))
     
+    # Start Flask development server
     app.run(
         host='0.0.0.0',  # Allow external connections
         port=port,
